@@ -1,0 +1,61 @@
+name: Update ABS data and publish site
+
+on:
+  schedule:
+    # Every day at 02:30 UTC (about 1:30pm Melbourne in summer, 12:30pm in winter),
+    # an hour after the ABS releases new figures at 11:30am Canberra time.
+    - cron: "30 2 * * *"
+  workflow_dispatch: # adds a "Run workflow" button in the Actions tab
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  update-and-publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Get the project files
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Collect the latest figures from the ABS
+        run: node scripts/fetch-abs.mjs
+
+      - name: Save the figures to the project
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/data/abs.json
+          if git diff --staged --quiet; then
+            echo "No new figures today."
+          else
+            git commit -m "Update ABS figures"
+            git push
+          fi
+
+      - name: Prepare the website
+        uses: actions/configure-pages@v5
+
+      - name: Package the website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Publish the website
+        id: deployment
+        uses: actions/deploy-pages@v4

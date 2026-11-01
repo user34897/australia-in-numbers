@@ -1,0 +1,208 @@
+:root {
+  --bg: #edf1ec;          /* pale eucalyptus leaf */
+  --surface: #f8faf7;
+  --ink: #17243a;         /* deep navy */
+  --muted: #56606e;
+  --rule: #c9d2c8;
+  --gum: #2f6b58;         /* eucalyptus green: wages, main series */
+  --wattle: #c9900f;      /* wattle gold: prices, Victoria */
+  --rose: #b0404c;        /* falls, warnings */
+  --sky: #3f6f9e;         /* secondary series */
+  --grid: rgba(23, 36, 58, 0.09);
+  --band: rgba(47, 107, 88, 0.12);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111a1c;
+    --surface: #18232a;
+    --ink: #e4ebe6;
+    --muted: #9fabaf;
+    --rule: #2c3a3f;
+    --gum: #6fbf9f;
+    --wattle: #e8b64a;
+    --rose: #e07a84;
+    --sky: #82aedb;
+    --grid: rgba(228, 235, 230, 0.08);
+    --band: rgba(111, 191, 159, 0.14);
+    color-scheme: dark;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 1.0625rem/1.55 "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
+
+/* ---- Masthead ---- */
+.masthead {
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+  position: sticky; top: 0; z-index: 10;
+}
+.masthead-inner {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: 0.25rem 1.5rem; padding-top: 1.1rem;
+}
+.brand {
+  font: 700 1.5rem/1.1 "Bricolage Grotesque", "Segoe UI", sans-serif;
+  letter-spacing: -0.02em;
+  color: var(--ink); text-decoration: none;
+}
+.updated { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+.tabs {
+  display: flex; gap: 0.25rem; overflow-x: auto; scrollbar-width: none;
+  margin-top: 0.6rem;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tabs a {
+  flex: none;
+  padding: 0.55rem 0.8rem 0.65rem;
+  color: var(--muted); text-decoration: none; font-weight: 700; font-size: 0.95rem;
+  border-bottom: 3px solid transparent;
+}
+.tabs a:hover { color: var(--ink); }
+.tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--gum); }
+.tabs a:focus-visible, .brand:focus-visible, summary:focus-visible {
+  outline: 3px solid var(--sky); outline-offset: 2px; border-radius: 3px;
+}
+
+/* ---- Content ---- */
+main.wrap { padding-top: 2rem; padding-bottom: 2rem; }
+
+.lede {
+  font: 500 clamp(1.45rem, 1.05rem + 1.7vw, 2.35rem)/1.28 "Bricolage Grotesque", "Segoe UI", sans-serif;
+  letter-spacing: -0.015em;
+  max-width: 34em;
+  margin: 0 0 2.25rem;
+}
+.lede .num { font-weight: 700; white-space: nowrap; }
+.lede .num.up { color: var(--wattle); }
+.lede .num.good { color: var(--gum); }
+.lede .num.plain { color: var(--ink); }
+
+h2 {
+  font: 700 1.15rem/1.3 "Bricolage Grotesque", "Segoe UI", sans-serif;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.3rem;
+}
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 1.25rem; }
+.chart-block {
+  margin: 0 0 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1.1rem 1.15rem 0.9rem;
+  min-width: 0;
+}
+.grid .chart-block { margin-bottom: 0; }
+.grid + .chart-block, .chart-block + .grid { margin-top: 1.25rem; }
+.chart-block figcaption p { margin: 0 0 0.9rem; color: var(--muted); max-width: 62ch; font-size: 0.97rem; }
+.chart { position: relative; height: 260px; }
+.chart.tall { height: 430px; }
+.wide .chart { height: 300px; }
+.wide .chart.tall { height: 440px; }
+
+.note { margin: 0.6rem 0 0; font-size: 0.85rem; color: var(--muted); }
+.note:empty { display: none; }
+.note.warn { color: var(--rose); }
+
+.empty {
+  display: grid; place-items: center; height: 100%;
+  color: var(--muted); text-align: center; padding: 1rem; font-size: 0.95rem;
+}
+
+/* ---- Table ---- */
+.table-title { margin-top: 2rem; }
+.table-scroll { overflow-x: auto; }
+.figures { width: 100%; border-collapse: collapse; margin-top: 0.5rem; min-width: 560px; }
+.figures th, .figures td { text-align: left; padding: 0.7rem 0.75rem 0.7rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.figures thead th { font-size: 0.85rem; color: var(--muted); font-weight: 700; }
+.figures td.val { font-weight: 700; font-size: 1.15rem; white-space: nowrap; }
+.figures td.chg { color: var(--muted); white-space: nowrap; }
+.figures td.when { color: var(--muted); font-size: 0.92rem; white-space: nowrap; }
+.figures .what small { display: block; color: var(--muted); font-size: 0.85rem; }
+
+/* ---- Footer ---- */
+.footer { padding-bottom: 3rem; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--rule); padding-top: 1.25rem; }
+.footer p { max-width: 70ch; }
+details summary { cursor: pointer; font-weight: 700; color: var(--ink); }
+#data-notes-body ul { padding-left: 1.1rem; }
+#data-notes-body li { margin: 0.3rem 0; }
+#data-notes-body .bad { color: var(--rose); }
+
+.banner {
+  border: 1px solid var(--rule); border-left: 4px solid var(--wattle);
+  background: var(--surface); padding: 1rem 1.15rem; border-radius: 4px; margin-bottom: 1.5rem;
+}
+
+/* ---- Scenarios (what-if calculator) ---- */
+.scn-lock { max-width: 34rem; }
+.scn-sub { margin: 0 0 1rem; color: var(--muted); font-size: 0.97rem; }
+.scn-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.scn-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.scn-row .scn-input { flex: 1 1 12rem; min-width: 0; }
+.scn-input {
+  font: inherit; color: var(--ink); background: var(--bg);
+  border: 1px solid var(--rule); border-radius: 4px; padding: 0.45rem 0.65rem;
+}
+.scn-btn {
+  font: 700 0.95rem/1.2 "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  color: var(--surface); background: var(--gum);
+  border: 1px solid var(--gum); border-radius: 4px; padding: 0.5rem 0.9rem; cursor: pointer;
+}
+.scn-btn:hover { filter: brightness(1.08); }
+.scn-btn-quiet { color: var(--ink); background: transparent; border-color: var(--rule); margin-top: 0.4rem; }
+.scn-btn-small { font-size: 0.85rem; padding: 0.3rem 0.6rem; }
+.scn-btn-danger { color: var(--rose); border-color: var(--rose); }
+.scn-input:focus-visible, .scn-btn:focus-visible, .scn-field input[type="range"]:focus-visible {
+  outline: 3px solid var(--sky); outline-offset: 2px;
+}
+
+.scn-field { margin: 0 0 1.1rem; }
+.scn-field-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.scn-field label { font-weight: 700; }
+.scn-field output { font-weight: 700; white-space: nowrap; }
+.scn-field input[type="range"] { width: 100%; accent-color: var(--gum); margin: 0.35rem 0 0; }
+.scn-field small { display: block; color: var(--muted); font-size: 0.85rem; }
+.scn-money { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.35rem; }
+.scn-money .scn-input { width: 9rem; }
+
+.scn-result { padding: 0.8rem 0; border-bottom: 1px solid var(--rule); }
+.scn-result:first-child { padding-top: 0; }
+.scn-result h3 { margin: 0 0 0.2rem; font-size: 0.85rem; font-weight: 700; color: var(--muted); }
+.scn-big { margin: 0; font: 700 1.35rem/1.25 "Bricolage Grotesque", "Segoe UI", sans-serif; letter-spacing: -0.01em; }
+.scn-big.good { color: var(--gum); }
+.scn-big.bad { color: var(--rose); }
+.scn-result p:not(.scn-big) { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.95rem; }
+
+.scn-save {
+  margin-top: 1rem; padding: 0.8rem 0.9rem;
+  background: var(--band); border-radius: 4px;
+}
+.scn-save label { display: block; font-weight: 700; margin-bottom: 0.45rem; }
+
+.scn-list { list-style: none; margin: 0.5rem 0 0; padding: 0; }
+.scn-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--rule); }
+.scn-list .scn-name { flex: 1 1 14rem; min-width: 0; }
+.scn-list .scn-name strong { overflow-wrap: anywhere; }
+.scn-list .scn-name small { display: block; color: var(--muted); font-size: 0.85rem; }
+.scn-list .scn-current strong::after { content: " (showing)"; font-weight: 400; color: var(--muted); }
+.scn-list .scn-empty { color: var(--muted); }
+
+@media (max-width: 600px) {
+  .chart, .wide .chart { height: 230px; }
+  .chart.tall, .wide .chart.tall { height: 470px; }
+  .chart-block { padding: 0.9rem 0.8rem 0.75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}

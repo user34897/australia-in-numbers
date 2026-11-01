@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Australia in numbers</title>
+  <meta name="description" content="Prices, wages, jobs, housing and population across Australia, updated daily from the Australian Bureau of Statistics.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="#overview">Australia in numbers</a>
+      <p class="updated" id="updated">Loading the latest figures…</p>
+    </div>
+    <nav class="wrap tabs" aria-label="Sections">
+      <a href="#overview" data-tab="overview">Overview</a>
+      <a href="#cost-of-living" data-tab="cost-of-living">Cost of living</a>
+      <a href="#housing" data-tab="housing">Housing</a>
+      <a href="#jobs" data-tab="jobs">Jobs</a>
+      <a href="#people" data-tab="people">People</a>
+      <a href="#states" data-tab="states">States</a>
+      <a href="#scenarios" data-tab="scenarios">Scenarios</a>
+    </nav>
+  </header>
+
+  <main class="wrap" id="main">
+    <!-- OVERVIEW -->
+    <section class="panel" id="panel-overview" data-panel="overview">
+      <p class="lede" id="lede"></p>
+      <figure class="chart-block wide">
+        <figcaption>
+          <h2>Are wages keeping up with prices?</h2>
+          <p>Yearly growth in wages compared with yearly growth in prices. When the green line is above the gold one, pay is outpacing the cost of living.</p>
+        </figcaption>
+        <div class="chart"><canvas id="ch-wages-prices"></canvas></div>
+        <p class="note" data-needs="wpi cpi_q"></p>
+      </figure>
+      <h2 class="table-title">The latest numbers</h2>
+      <div class="table-scroll"><table class="figures" id="latest-table"></table></div>
+    </section>
+
+    <!-- COST OF LIVING -->
+    <section class="panel" id="panel-cost-of-living" data-panel="cost-of-living" hidden>
+      <figure class="chart-block wide">
+        <figcaption>
+          <h2>What has gone up the most</h2>
+          <p id="items-caption">How much prices changed in the past year, by type of spending.</p>
+        </figcaption>
+        <div class="chart tall"><canvas id="ch-items"></canvas></div>
+        <p class="note" data-needs="cpi_items"></p>
+      </figure>
+      <div class="grid">
+        <figure class="chart-block">
+          <figcaption>
+            <h2>Inflation over time</h2>
+            <p>How much prices rose over each year. The shaded band is the Reserve Bank’s 2–3% target.</p>
+          </figcaption>
+          <div class="chart"><canvas id="ch-inflation"></canvas></div>
+          <p class="note" data-needs="cpi_q"></p>
+        </figure>
+        <figure class="chart-block">
+          <figcaption>
+            <h2>Real wages</h2>
+            <p>Wage growth minus inflation. Above zero means pay buys more than a year earlier; below zero means it buys less.</p>
+          </figcaption>
+          <div class="chart"><canvas id="ch-real-wages"></canvas></div>
+          <p class="note" data-needs="wpi cpi_q"></p>
+        </figure>
+      </div>
+    </section>
+
+    <!-- HOUSING -->
+    <section class="panel" id="panel-housing" data-panel="housing" hidden>
+      <div class="grid">
+        <figure class="chart-block">
+          <figcaption>
+            <h2>Rents</h2>
+            <p>How much rents rose over each year, compared with prices overall.</p>
+          </figcaption>
+          <div class="chart"><canvas id="ch-rents"></canvas></div>
+          <p class="note" data-needs="rents_q cpi_q"></p>
+        </figure>
+        <figure class="chart-block">
+          <figcaption>
+            <h2>New homes approved</h2>
+            <p>Homes given building approval each month. The darker line smooths out the month-to-month noise.</p>
+          </figcaption>
+          <div class="chart"><canvas id="ch-approvals"></canvas></div>
+          <p class="note" data-needs="approvals"></p>
+        </figure>
+      </div>
+      <figure class="chart-block wide">
+        <figcaption>
+          <h2>People added versus homes approved</h2>
+          <p>Each year, how many people Australia’s population grew by, next to how many new homes were approved. Roughly 2.5 people live in the average home.</p>
+        </figcaption>
+        <div class="chart"><canvas id="ch-supply"></canvas></div>
+        <p class="note" data-needs="population approvals"></p>
+      </figure>
+    </section>
+
+    <!-- JOBS -->
+    <section class="panel" id="panel-jobs" data-panel="jobs" hidden>
+      <figure class="chart-block wide">
+        <figcaption>
+          <h2>Unemployment and underemployment</h2>
+          <p>Unemployed: wants a job, can’t find one. Underemployed: has a job but wants more hours.</p>
+        </figcaption>
+        <div class="chart"><canvas id="ch-unemp"></canvas></div>
+        <p class="note" data-needs="unemp underemp"></p>
+      </figure>
+      <div class="grid">
+        <figure class="chart-block">
+          <figcaption>
+            <h2>Young people</h2>
+            <p>Unemployment for 15 to 24 year olds, compared with everyone.</p>
+          </figcaption>
+          <div class="chart"><canvas id="ch-youth"></canvas></div>
+          <p class="note" data-needs="unemp_youth unemp"></p>
+        </figure>
+        <figure class="chart-block">
+          <figcaption>
+            <h2>Full-time and part-time</h2>
+            <p>Millions of people employed full-time and part-time.</p>
+          </figcaption>
+          <div class="chart"><canvas id="ch-ftpt"></canvas></div>
+          <p class="note" data-needs="ft_pt"></p>
+        </figure>
+        <figure class="chart-block">
+          <figcaption>
+            <h2>People in the workforce</h2>
+            <p>The share of people aged 15 and over who have a job or are looking for one.</p>
+          </figcaption>
+          <div class="chart"><canvas id="ch-participation"></canvas></div>
+          <p class="note" data-needs="participation"></p>
+        </figure>
+        <figure class="chart-block">
+          <figcaption>
+            <h2>Job vacancies</h2>
+            <p>Jobs employers are trying to fill, in thousands.</p>
+          </figcaption>
+          <div class="chart"><canvas id="ch-vacancies"></canvas></div>
+          <p class="note" data-needs="vacancies"></p>
+        </figure>
+      </div>
+    </section>
+
+    <!-- PEOPLE -->
+    <section class="panel" id="panel-people" data-panel="people" hidden>
+      <p class="lede" id="people-lede"></p>
+      <div class="grid">
+        <figure class="chart-block">
+          <figcaption>
+            <h2>Australia’s population</h2>
+            <p>Millions of people living in Australia.</p>
+          </figcaption>
+          <div class="chart"><canvas id="ch-pop"></canvas></div>
+          <p class="note" data-needs="population"></p>
+        </figure>
+        <figure class="chart-block">
+          <figcaption>
+            <h2>Where growth comes from</h2>
+            <p>Each year’s growth, split into natural increase (births minus deaths) and net overseas migration (arrivals minus departures).</p>
+          </figcaption>
+          <div class="chart"><canvas id="ch-pop-sources"></canvas></div>
+          <p class="note" data-needs="population"></p>
+        </figure>
+      </div>
+    </section>
+
+    <!-- STATES -->
+    <section class="panel" id="panel-states" data-panel="states" hidden>
+      <p class="lede">How each state and territory compares on the latest figures. Victoria is highlighted.</p>
+      <div class="grid">
+        <figure class="chart-block">
+          <figcaption><h2>Unemployment rate</h2><p id="cap-st-unemp">Per cent of the workforce.</p></figcaption>
+          <div class="chart"><canvas id="ch-st-unemp"></canvas></div>
+          <p class="note" data-needs="unemp_states"></p>
+        </figure>
+        <figure class="chart-block">
+          <figcaption><h2>Wage growth</h2><p id="cap-st-wages">Rise in pay over the past year.</p></figcaption>
+          <div class="chart"><canvas id="ch-st-wages"></canvas></div>
+          <p class="note" data-needs="wpi_states"></p>
+        </figure>
+        <figure class="chart-block">
+          <figcaption><h2>Inflation by capital city</h2><p id="cap-st-cpi">Rise in prices over the past year.</p></figcaption>
+          <div class="chart"><canvas id="ch-st-cpi"></canvas></div>
+          <p class="note" data-needs="cpi_cities"></p>
+        </figure>
+        <figure class="chart-block">
+          <figcaption><h2>Population growth</h2><p id="cap-st-pop">Growth over the past year.</p></figcaption>
+          <div class="chart"><canvas id="ch-st-pop"></canvas></div>
+          <p class="note" data-needs="population_states"></p>
+        </figure>
+      </div>
+    </section>
+
+    <!-- SCENARIOS (what-if calculator; logic lives in assets/scenarios.js) -->
+    <section class="panel" id="panel-scenarios" data-panel="scenarios" hidden>
+      <p class="lede">What if prices and pay kept rising at a steady rate? Try your own numbers. These are what-if calculations, not predictions.</p>
+
+      <div class="chart-block scn-lock" id="scn-lock">
+        <h2>Enter the access code</h2>
+        <form class="scn-row" id="scn-lock-form" autocomplete="off">
+          <label class="scn-sr" for="scn-code">Access code</label>
+          <input class="scn-input" type="password" id="scn-code" placeholder="Access code" autocapitalize="none" spellcheck="false">
+          <button class="scn-btn" type="submit">Unlock</button>
+        </form>
+        <p class="note" id="scn-lock-msg" role="status"></p>
+      </div>
+
+      <div id="scn-app" hidden>
+        <div class="grid">
+          <div class="chart-block">
+            <h2>Your what-if settings</h2>
+            <p class="scn-sub" id="scn-source">These start at the latest ABS figures. Change them to try your own.</p>
+            <div id="scn-inputs"></div>
+            <button class="scn-btn scn-btn-quiet" type="button" id="scn-reset">Reset to latest ABS figures</button>
+          </div>
+          <div class="chart-block">
+            <h2>What if…</h2>
+            <p class="scn-sub">Worked out from your settings. Not a prediction.</p>
+            <div id="scn-results" aria-live="polite"></div>
+            <form class="scn-save" id="scn-save" hidden autocomplete="off">
+              <label for="scn-save-name">Would you like to save these settings?</label>
+              <div class="scn-row">
+                <input class="scn-input" type="text" id="scn-save-name" maxlength="60" placeholder="e.g. Mum’s groceries">
+                <button class="scn-btn" type="submit">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="chart-block wide scn-saved">
+          <h2>Saved scenarios</h2>
+          <ul class="scn-list" id="scn-list"></ul>
+          <p class="note">Saved scenarios stay in this browser on this device only. They aren’t sent anywhere or shared, and clearing your browser data removes them.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    <p>Figures come from the Australian Bureau of Statistics (ABS), Australia’s official statistics agency, and are collected automatically each day. Based on ABS data, licensed under CC BY 4.0.</p>
+    <details id="data-notes">
+      <summary>About the data</summary>
+      <div id="data-notes-body"></div>
+    </details>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="assets/scenarios.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
